@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dwsync>
+<file name="authorizenet_aim.tpl" server="railroadbazaar.com//shop/" local="129981554600000000" remote="130047477600000000" />
+<file name="authorizenet_sim.tpl" server="railroadbazaar.com//shop/" local="129747099860000000" remote="130047477600000000" />
+<file name="authorizenet_sim_callback.tpl" server="railroadbazaar.com//shop/" local="129747099860000000" remote="130047477600000000" />
+<file name="bank_transfer.tpl" server="railroadbazaar.com//shop/" local="129836747920000000" remote="130047477600000000" />
+<file name="cheque.tpl" server="railroadbazaar.com//shop/" local="129836748020000000" remote="130047477600000000" />
+<file name="cod.tpl" server="railroadbazaar.com//shop/" local="129836748120000000" remote="130047477600000000" />
+<file name="free_checkout.tpl" server="railroadbazaar.com//shop/" local="129836748200000000" remote="130047477600000000" />
+<file name="google_checkout.tpl" server="railroadbazaar.com//shop/" local="130046600040000000" remote="130047477600000000" />
+<file name="klarna_account.tpl" server="railroadbazaar.com//shop/" local="130038234980000000" remote="130047477600000000" />
+<file name="klarna_invoice.tpl" server="railroadbazaar.com//shop/" local="130046600920000000" remote="130047477600000000" />
+<file name="liqpay.tpl" server="railroadbazaar.com//shop/" local="129747099860000000" remote="130047477600000000" />
+<file name="moneybookers.tpl" server="railroadbazaar.com//shop/" local="129948323060000000" remote="130047477600000000" />
+<file name="nochex.tpl" server="railroadbazaar.com//shop/" local="129948323160000000" remote="130047477600000000" />
+<file name="paymate.tpl" server="railroadbazaar.com//shop/" local="129751160400000000" remote="130047477600000000" />
+<file name="paypoint.tpl" server="railroadbazaar.com//shop/" local="129750562880000000" remote="130047477600000000" />
+<file name="paypoint_failure.tpl" server="railroadbazaar.com//shop/" local="129126637680000000" remote="130047477600000000" />
+<file name="paypoint_success.tpl" server="railroadbazaar.com//shop/" local="129126637680000000" remote="130047477600000000" />
+<file name="payza.tpl" server="railroadbazaar.com//shop/" local="129896242800000000" remote="130047477600000000" />
+<file name="perpetual_payments.tpl" server="railroadbazaar.com//shop/" local="129981554600000000" remote="130047477600000000" />
+<file name="pp_express.tpl" server="railroadbazaar.com//shop/" local="129733212440000000" remote="130047477600000000" />
+<file name="pp_pro.tpl" server="railroadbazaar.com//shop/" local="129981554620000000" remote="130047477600000000" />
+<file name="pp_pro_uk.tpl" server="railroadbazaar.com//shop/" local="129981554620000000" remote="130047477600000000" />
+<file name="pp_standard.tpl" server="railroadbazaar.com//shop/" local="129747099860000000" remote="130047477600000000" />
+<file name="sagepay.tpl" server="railroadbazaar.com//shop/" local="129747099860000000" remote="130047477600000000" />
+<file name="sagepay_direct.tpl" server="railroadbazaar.com//shop/" local="129981554620000000" remote="130047477600000000" />
+<file name="sagepay_us.tpl" server="railroadbazaar.com//shop/" local="129981554620000000" remote="130047477600000000" />
+<file name="twocheckout.tpl" server="railroadbazaar.com//shop/" local="129747099860000000" remote="130047477600000000" />
+<file name="web_payment_software.tpl" server="railroadbazaar.com//shop/" local="129981554620000000" remote="130047477600000000" />
+<file name="worldpay.tpl" server="railroadbazaar.com//shop/" local="129747099860000000" remote="130047477600000000" />
+<file name="worldpay_failure.tpl" server="railroadbazaar.com//shop/" local="129200163500000000" remote="130047477600000000" />
+<file name="worldpay_success.tpl" server="railroadbazaar.com//shop/" local="129836751560000000" remote="130047477600000000" />
+</dwsync>
