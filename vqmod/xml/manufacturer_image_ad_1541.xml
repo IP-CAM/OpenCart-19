@@ -1,0 +1,89 @@
+﻿<modification>
+	<id>manufacturer image ad</id>
+	<version>0.1</version>
+	<vqmver>2.0</vqmver>
+	<author>focuswebdesign.ro</author>
+
+/* pages manufacturer */
+<file name="catalog/controller/product/manufacturer.php">
+	<operation>
+		<search position="before"><![CDATA[
+		$manufacturer_info = $this->model_catalog_manufacturer->getManufacturer($manufacturer_id);
+		]]></search>	
+		<add><![CDATA[
+		$manufacturer_image = $this->model_catalog_manufacturer->getManufacturer($manufacturer_id);
+		 
+         if($manufacturer_image){
+           $this->data['manufacturers_img'] = $this->model_tool_image->resize($manufacturer_image['image'], 120, 120);
+		   
+         }else{
+            $this->data['manufacturers_img'] = false;
+         }
+		]]></add>
+	</operation>
+</file>
+
+
+ 
+	<file name="catalog/view/theme/*/template/product/manufacturer_info.tpl">
+		<operation>
+			<search position="after"><![CDATA[
+				<h1><?php echo $heading_title; ?></h1>
+			]]></search>
+			<add><![CDATA[
+			<?php if(!empty($manufacturers_img)) { ?>
+				<img src="<?php echo $manufacturers_img;?>" alt="<?php echo $manufacturer;?>" />
+			<?php } ?>
+		]]></add>
+	</operation>
+	</file>
+ 
+/* pages product */
+	<file name="catalog/model/catalog/product.php">
+	<operation>
+		<search position="replace"><![CDATA[
+		m.name AS manufacturer,
+		]]></search>
+		<add><![CDATA[
+		m.name AS manufacturer, m.image AS mimage,
+		]]></add>
+	</operation>
+	<operation>
+			<search position="after"><![CDATA[
+			=> $query->row['manufacturer'],
+			]]></search>
+			<add><![CDATA[
+			'mimage'          => $query->row['mimage'],
+			]]></add>
+	</operation>
+	</file>
+
+	<file name="catalog/controller/product/product.php">
+		<operation>
+			<search position="after"><![CDATA[
+			$this->load->model('tool/image');
+			]]></search>
+			<add><![CDATA[
+			if($product_info['mimage']){
+			    $this->data['mimage']=$this->model_tool_image->resize($product_info['mimage'],100,100);
+			}else{
+			    $this->data['mimage']=$this->model_tool_image->resize('no_image.jpg',100,100);
+			}
+			]]></add>
+		</operation>
+	</file>
+		
+	<file name="catalog/view/theme/*/template/product/product.tpl">
+		<operation>
+		<search position="replace"><![CDATA[
+        <span><?php echo $text_manufacturer; ?></span> <a href="<?php echo $manufacturers; ?>"><?php echo $manufacturer; ?></a><br />
+		]]></search>
+		<add><![CDATA[
+			<a href="<?php echo $manufacturers; ?>"><img  src="<?php echo $mimage; ?>" title="<?php echo $manufacturer; ?>" alt="<?php echo $manufacturer; ?>" /></a><br />
+			<span><?php echo $text_manufacturer; ?></span> <a href="<?php echo $manufacturers; ?>"><?php echo $manufacturer; ?> </a><br />
+		]]></add>
+		</operation>
+	</file>
+	
+	
+</modification>

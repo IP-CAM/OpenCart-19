@@ -1,0 +1,624 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<id>jgsw product zoom deluxe</id>
+	<version>1.0</version>
+	<vqmver>2.2.2</vqmver>
+	<author>jgsw</author>
+	
+	<!-- Catalog Edits -->
+	
+	<!-- For opencart 1.5.1.3 search for 'color box' and replace with 'fancy box' (without the quotes and spaces) -->
+	
+	<file name="catalog/view/theme/*/template/common/header.tpl">
+        <operation>
+            <search position="before"><![CDATA[<?php foreach ($scripts as $script) { ?>]]></search>
+            <add><![CDATA[<?php if (isset ($jqzoomloaded)) {} else { ?>
+<link rel="stylesheet" type="text/css" href="catalog/view/javascript/jquery/jqzoom/css/jquery.jqzoom.css"/>
+<script type='text/javascript' src='catalog/view/javascript/jquery/jqzoom/js/jquery.jqzoom-core.js'></script>  
+<?php }; $jqzoomloaded = true; ?>]]></add>
+        </operation>
+	</file>
+	<file name="catalog/view/theme/*/template/product/product.tpl">
+		<operation>
+            <search position="replace"><![CDATA[<div class="image"><a href="<?php echo $popup; ?>" title="<?php echo $heading_title; ?>" class="colorbox"><img src="<?php echo $thumb; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" id="image" /></a></div>]]></search>
+            <add><![CDATA[
+			<?php if ($jqzoom == '1') { ?>
+			<div class="image"><a href="<?php echo $jqzoom_image; ?>" title="<?php echo $heading_title; ?>" class="jqzoom" rel="gal1"><img src="<?php echo $thumb; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" id="image" /></a></div>
+			<?php } else { ?>
+			<div class="image"><a href="<?php echo $popup; ?>" title="<?php echo $heading_title; ?>" class="colorbox" rel="colorbox"><img src="<?php echo $thumb; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" id="image" /></a></div>
+			<?php } ?>
+            ]]></add>
+        </operation>
+		<operation>
+            <search position="after"><![CDATA[<div class="image-additional">]]></search>
+            <add><![CDATA[
+			<?php if ($jqzoom == '1') { ?>
+			<a class="zoomThumbActive" href="javascript:void(0);" title="<?php echo $heading_title; ?>" rel="{gallery: 'gal1', smallimage: '<?php echo $thumb; ?>',largeimage: '<?php echo $jqzoom_image; ?>'}"><img src="<?php echo $thumbadditional; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" id="image" /></a>
+			<?php } ?>
+            ]]></add>
+        </operation>
+		<operation>
+            <search position="replace"><![CDATA[<a href="<?php echo $image['popup']; ?>" title="<?php echo $heading_title; ?>" class="colorbox"><img src="<?php echo $image['thumb']; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a>]]></search>
+            <add><![CDATA[
+			<?php if ($jqzoom == '1') { ?>
+			<a href="javascript:void(0);" title="<?php echo $heading_title; ?>" rel="{gallery: 'gal1', smallimage: '<?php echo $image['thumbimage']; ?>',largeimage: '<?php echo $image['jqzoom_image']; ?>'}"><img src="<?php echo $image['thumb']; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a>
+			<?php } else { ?>
+			<a href="<?php echo $image['popup']; ?>" title="<?php echo $heading_title; ?>" class="colorbox"><img src="<?php echo $image['thumb']; ?>" title="<?php echo $heading_title; ?>" alt="<?php echo $heading_title; ?>" /></a>
+			<?php } ?>
+            ]]></add>
+        </operation>
+        <operation>
+            <search position="after"><![CDATA[<div class="description">]]></search>
+            <add><![CDATA[			
+			<?php $neg = '-';
+			$pos = strpos($jqzoom_offset_vertical,'$neg');
+			if($pos === false) {
+				// echo 'found';
+				$jqzoom_offset_vertical_neg = $jqzoom_offset_vertical;
+				$jqzoom_offset_vertical = '0';			
+			};
+			$pos = strpos($jqzoom_offset_horizontal,'$neg');
+			if($pos === false) {
+				// echo 'found';
+				$jqzoom_offset_horizontal_neg = $jqzoom_offset_horizontal;
+				$jqzoom_offset_horizontal = '0';			
+			};?>
+			
+			<style>
+				<?php if ($jqzoom_offset_vertical_neg) { ?>
+				.zoomWindow {margin-top: <?php echo $jqzoom_offset_vertical_neg; ?>px;}
+				<?php } ?>
+				<?php if ($jqzoom_offset_horizontal_neg) { ?>
+				.zoomWindow {margin-left: <?php echo $jqzoom_offset_horizontal_neg; ?>px;}
+				<?php } ?>
+				<?php if ($jqzoom_cursor) { ?>
+				.zoomPad {cursor: <?php echo $jqzoom_cursor; ?>;}
+				<?php } ?>
+			</style>
+			<?php $zoomdebug = 0; if ($zoomdebug == 1) { ?>
+			<?php echo $jqzoom; ?>
+			<?php echo $jqzoom_type; ?>
+			<?php echo $jqzoom_window_width; ?>
+			<?php echo $jqzoom_window_height; ?>
+			<?php echo $jqzoom_offset_horizontal; ?>
+			<?php echo $jqzoom_offset_vertical; ?>
+			<?php echo $jqzoom_position; ?>
+			<?php echo $jqzoom_preload; ?>
+			<?php if ($jqzoom_preload == 1) {echo 'true';} else {echo 'false';} ?>
+			<?php echo $jqzoom_preloadtext; ?>
+			<?php echo $jqzoom_title; ?>
+			<?php if ($jqzoom_title == 1) {echo 'true';} else {echo 'false';} ?>
+			<?php echo $jqzoom_lens; ?>
+			<?php if ($jqzoom_lens == 1) {echo 'true';} else {echo 'false';} ?>
+			<?php echo $jqzoom_imageopacity; ?>
+			<?php echo $jqzoom_fadein; ?>
+			<?php if ($jqzoom_fadein == 1) {echo 'fadein';} else {echo 'show';} ?>
+			<?php echo $jqzoom_fadeout; ?>
+			<?php if ($jqzoom_fadeout == 1) {echo 'fadeout';} else {echo 'show';} ?>
+			<?php echo $jqzoom_fadein_speed; ?>
+			<?php echo $jqzoom_fadeout_speed; ?>
+			<?php echo $jqzoom_cursor; ?>
+			<?php } ?>
+			
+            ]]></add>
+        </operation>
+		<operation>
+            <search position="before"><![CDATA[<?php echo $footer; ?>]]></search>
+            <add><![CDATA[
+			<?php if ($jqzoom == '1') { ?>
+			<script type="text/javascript">
+				$(document).ready(function(){  
+					var options = {  
+							alwaysOn:<?php if ($jqzoom_always == 1) {echo 'true';} else {echo 'false';} ?>,
+							zoomType: 'standard',
+							zoomWidth: <?php echo $jqzoom_window_width; ?>,  
+							zoomHeight: <?php echo $jqzoom_window_height; ?>,  
+							xOffset:<?php echo $jqzoom_offset_horizontal; ?>,  
+							yOffset:<?php echo $jqzoom_offset_vertical; ?>,  
+							position:'<?php echo $jqzoom_position; ?>',
+							preloadImages: <?php if ($jqzoom_preload == 1) {echo 'true';} else {echo 'false';} ?>,
+							preloadText: '<?php echo $jqzoom_preloadtext; ?>',
+							title: <?php if ($jqzoom_title == 1) {echo 'true';} else {echo 'false';} ?>,
+							lens:<?php if ($jqzoom_lens == 1) {echo 'true';} else {echo 'false';} ?>,
+							<?php if ($jqzoom_imageopacity) { ?>imageOpacity:<?php echo $jqzoom_imageopacity; ?><?php } ?>	
+					};  
+					$('.jqzoom').jqzoom(options);  
+				}); 
+			</script>
+			<?php } ?>
+            ]]></add>
+        </operation>
+	</file>
+	<file name="catalog/controller/product/product.php">
+        <operation>
+            <search position="after"><![CDATA[$this->load->model('tool/image');]]></search>
+            <add><![CDATA[
+			if ($product_info['image']) {
+				$this->data['jqzoom'] = $this->config->get('config_jqzoom');
+				
+				if ($this->config->get('config_image_jqzoom_width')) {
+					$this->data['jqzoom_image'] = $this->model_tool_image->resize($product_info['image'], $this->config->get('config_image_jqzoom_width'), $this->config->get('config_image_jqzoom_height'));
+				};	
+				
+				$this->data['thumbadditional'] = $this->model_tool_image->resize($product_info['image'], $this->config->get('config_image_additional_width'), $this->config->get('config_image_additional_height'));			
+				
+				$this->data['jqzoom_type'] = $this->config->get('config_jqzoom_type');
+				$this->data['jqzoom_window_width'] = $this->config->get('config_image_jqzoom_window_width');
+				$this->data['jqzoom_window_height'] = $this->config->get('config_image_jqzoom_window_height');
+				$this->data['jqzoom_offset_horizontal'] = $this->config->get('config_jqzoom_offset_horizontal');
+				$this->data['jqzoom_offset_vertical'] = $this->config->get('config_jqzoom_offset_vertical');
+				$this->data['jqzoom_position'] = $this->config->get('config_jqzoom_position');
+				$this->data['jqzoom_always'] = $this->config->get('config_jqzoom_always');
+				$this->data['jqzoom_preload'] = $this->config->get('config_jqzoom_preload');
+				$this->data['jqzoom_preloadtext'] = $this->config->get('config_jqzoom_preloadtext');
+				$this->data['jqzoom_title'] = $this->config->get('config_jqzoom_title');
+				$this->data['jqzoom_lens'] = $this->config->get('config_jqzoom_lens');
+				$this->data['jqzoom_imageopacity'] = $this->config->get('config_jqzoom_imageopacity');
+				$this->data['jqzoom_fadein'] = $this->config->get('config_jqzoom_fadein');
+				$this->data['jqzoom_fadeout'] = $this->config->get('config_jqzoom_fadeout');
+				$this->data['jqzoom_fadein_speed'] = $this->config->get('config_jqzoom_fadein_speed');
+				$this->data['jqzoom_fadeout_speed'] = $this->config->get('config_jqzoom_fadeout_speed');
+				$this->data['jqzoom_cursor'] = $this->config->get('config_jqzoom_cursor');				
+			} else {
+				$this->data['jqzoom'] = '';
+				$this->data['jqzoom_image'] = '';
+				$this->data['thumbadditional'] = '';
+				$this->data['jqzoom_window_width'] = '';
+				$this->data['jqzoom_window_height'] = '';
+				$this->data['jqzoom_offset_horizontal'] = '';
+				$this->data['jqzoom_offset_vertical'] = '';
+				$this->data['jqzoom_position'] = '';
+				$this->data['jqzoom_always'] = '';
+				$this->data['jqzoom_preload'] = '';
+				$this->data['jqzoom_preloadtext'] = '';
+				$this->data['jqzoom_title'] = '';
+				$this->data['jqzoom_lens'] = '';
+				$this->data['jqzoom_imageopacity'] = '';
+				$this->data['jqzoom_fadein'] = '';
+				$this->data['jqzoom_fadeout'] = '';
+				$this->data['jqzoom_fadein_speed'] = '';
+				$this->data['jqzoom_fadeout_speed'] = '';
+				$this->data['jqzoom_cursor'] = '';
+			}		
+            ]]></add>
+        </operation>
+		<operation><!-- For each additional image -->
+            <search position="after"><![CDATA[$this->data['images'][] = array(]]></search>
+            <add><![CDATA[			
+			'jqzoom_image' => $this->model_tool_image->resize($result['image'] , $this->config->get('config_image_jqzoom_width'), $this->config->get('config_image_jqzoom_height')),
+			'thumbimage' => $this->model_tool_image->resize($result['image'] , $this->config->get('config_image_thumb_width'), $this->config->get('config_image_thumb_height')),			
+            ]]></add>
+        </operation>
+	</file>
+	
+	
+	<!-- Admin Edits -->
+	
+	<file name="admin/view/template/setting/setting.tpl">
+		<operation>
+            <search position="after"><![CDATA[<div id="tab-image">]]></search>
+            <add><![CDATA[
+			<h2><?php echo $tab_image; ?></h2>
+			]]></add>
+		</operation>
+		<operation>
+            <search position="before" offset="1"><![CDATA[<div id="tab-ftp">]]></search>
+            <add><![CDATA[
+			<h2><?php echo $text_jqzoom_product_zoom; ?></h2>
+			<table class="form">
+			<tr><td><a target="_blank"  style="text-decoration:none; " href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2R9K9D3SE4YFA">Buy me a coffee</a></td><td><a target="_blank" style="text-decoration:none; " href="http://www.opencart.com/index.php?route=extension/extension&filter_username=jgsw">Review on this demo or purchase full version.</a></td></tr>
+			<tr>
+              <td><?php echo $entry_jqzoom; ?></td>
+              <td><?php if ($config_jqzoom) { ?>
+                <input type="radio" name="config_jqzoom" value="1" checked="checked" />
+                <?php echo $text_yes; ?>
+                <input type="radio" name="config_jqzoom" value="0" />
+                <?php echo $text_no; ?>
+                <?php } else { ?>
+                <input type="radio" name="config_jqzoom" value="1" />
+                <?php echo $text_yes; ?>
+                <input type="radio" name="config_jqzoom" value="0" checked="checked" />
+                <?php echo $text_no; ?>
+                <?php } ?></td>
+            </tr>
+			<tr>
+              <td><?php echo $entry_jqzoom_type; ?></td>
+              <td><select name="config_jqzoom_type">
+                  <?php  if ($config_jqzoom_type == 'standard') { ?>
+                  <option value="standard" selected="selected"><?php echo $text_jqzoom_standard; ?></option>
+                  <?php } else { ?>
+                  <option value="standard"><?php echo $text_jqzoom_standard; ?></option>
+                  <?php } ?>
+                  <?php  if ($config_jqzoom_type == 'reverse') { ?>
+                  <option value="reverse" selected="selected" disabled><?php echo $text_jqzoom_reverse; ?></option>
+                  <?php } else { ?>
+                  <option value="reverse" disabled><?php echo $text_jqzoom_reverse; ?></option>
+                  <?php } ?>
+				  <?php  if ($config_jqzoom_type == 'drag') { ?>
+                  <option value="drag" selected="selected" disabled><?php echo $text_jqzoom_drag; ?></option>
+                  <?php } else { ?>
+                  <option value="drag" disabled><?php echo $text_jqzoom_drag; ?></option>
+                  <?php } ?>
+				  <?php  if ($config_jqzoom_type == 'innerzoom') { ?>
+                  <option value="innerzoom" selected="selected" disabled><?php echo $text_jqzoom_innerzoom; ?></option>
+                  <?php } else { ?>
+                  <option value="innerzoom" disabled><?php echo $text_jqzoom_innerzoom; ?></option>
+                  <?php } ?>
+                </select></td>
+            </tr>
+			<tr>
+              <td><span class="required">*</span> <?php echo $entry_image_jqzoom; ?></td>
+              <td><input type="text" name="config_image_jqzoom_width" value="<?php echo $config_image_jqzoom_width; ?>" size="3" />
+                x
+                <input type="text" name="config_image_jqzoom_height" value="<?php echo $config_image_jqzoom_height; ?>" size="3" />
+                <?php if ($error_image_jqzoom) { ?>
+                <span class="error"><?php echo $error_image_jqzoom; ?></span>
+                <?php } ?></td>
+            </tr>
+			<tr>
+              <td><span class="required">*</span> <?php echo $entry_image_jqzoom_window; ?></td>
+              <td><input type="text" name="config_image_jqzoom_window_width" value="<?php echo $config_image_jqzoom_window_width; ?>" size="3" />
+                x
+                <input type="text" name="config_image_jqzoom_window_height" value="<?php echo $config_image_jqzoom_window_height; ?>" size="3" />
+                <?php if ($error_image_jqzoom_window) { ?>
+                <span class="error"><?php echo $error_image_jqzoom_window; ?></span>
+                <?php } ?></td>
+            </tr>
+			<tr>
+              <td><?php echo $entry_jqzoom_offset; ?></td>
+              <td><input type="text" name="config_jqzoom_offset_horizontal" value="<?php echo $config_jqzoom_offset_horizontal; ?>" size="3" />
+                x
+                <input type="text" name="config_jqzoom_offset_vertical" value="<?php echo $config_jqzoom_offset_vertical; ?>" size="3" />
+            </td>
+            </tr>
+			<!--<tr>
+              <td><?php echo $entry_jqzoom_position; ?></td>
+              <td><select name="config_jqzoom_position">
+                  <?php  if ($config_jqzoom_position == 'right') { ?>
+                  <option value="right" selected="selected"><?php echo $text_jqzoom_right; ?></option>
+                  <?php } else { ?>
+                  <option value="right"><?php echo $text_jqzoom_right; ?></option>
+                  <?php } ?>
+                  <?php  if ($config_jqzoom_position == 'left') { ?>
+                  <option value="left" selected="selected"><?php echo $text_jqzoom_left; ?></option>
+                  <?php } else { ?>
+                  <option value="left"><?php echo $text_jqzoom_left; ?></option>
+                  <?php } ?>
+				  <?php  if ($config_jqzoom_position == 'top') { ?>
+                  <option value="top" selected="selected"><?php echo $text_jqzoom_top; ?></option>
+                  <?php } else { ?>
+                  <option value="top"><?php echo $text_jqzoom_top; ?></option>
+                  <?php } ?>
+				  <?php  if ($config_jqzoom_position == 'bottom') { ?>
+                  <option value="bottom" selected="selected"><?php echo $text_jqzoom_bottom; ?></option>
+                  <?php } else { ?>
+                  <option value="bottom"><?php echo $text_jqzoom_bottom; ?></option>
+                  <?php } ?>
+                </select></td>
+            </tr>-->
+			<tr>
+              <td><?php echo $entry_jqzoom_always; ?></td>
+              <td><?php if ($config_jqzoom_always) { ?>
+                <input type="radio" name="config_jqzoom_always" value="1" checked="checked" />
+                <?php echo $text_yes; ?>
+                <input type="radio" name="config_jqzoom_always" value="0" />
+                <?php echo $text_no; ?>
+                <?php } else { ?>
+                <input type="radio" name="config_jqzoom_always" value="1" />
+                <?php echo $text_yes; ?>
+                <input type="radio" name="config_jqzoom_always" value="0" checked="checked" />
+                <?php echo $text_no; ?>
+                <?php } ?></td>
+            </tr>
+			<tr>
+              <td><?php echo $entry_jqzoom_preload; ?></td>
+              <td><?php if ($config_jqzoom_preload) { ?>
+                <input type="radio" name="config_jqzoom_preload" value="1" checked="checked" />
+                <?php echo $text_yes; ?>
+                <input type="radio" name="config_jqzoom_preload" value="0" />
+                <?php echo $text_no; ?>
+                <?php } else { ?>
+                <input type="radio" name="config_jqzoom_preload" value="1" />
+                <?php echo $text_yes; ?>
+                <input type="radio" name="config_jqzoom_preload" value="0" checked="checked" />
+                <?php echo $text_no; ?>
+                <?php } ?></td>
+            </tr>
+			<tr>
+              <td><?php echo $entry_jqzoom_preloadtext; ?></td>
+              <td><input type="text" name="config_jqzoom_preloadtext" value="<?php echo $config_jqzoom_preloadtext; ?>" size="16" />
+              </td>
+            </tr>			
+			<tr>
+              <td><?php echo $entry_jqzoom_title; ?></td>
+              <td><?php if ($config_jqzoom_title) { ?>
+                <input type="radio" name="config_jqzoom_title" value="1" checked="checked" />
+                <?php echo $text_yes; ?>
+                <input type="radio" name="config_jqzoom_title" value="0" />
+                <?php echo $text_no; ?>
+                <?php } else { ?>
+                <input type="radio" name="config_jqzoom_title" value="1" />
+                <?php echo $text_yes; ?>
+                <input type="radio" name="config_jqzoom_title" value="0" checked="checked" />
+                <?php echo $text_no; ?>
+                <?php } ?></td>
+            </tr>
+			<tr>
+              <td><?php echo $entry_jqzoom_lens; ?></td>
+              <td>
+                <input type="radio" name="config_jqzoom_lens" value="1" disabled/>
+                <?php echo $text_yes; ?>
+                <input type="radio" name="config_jqzoom_lens" value="0" checked="checked" disabled/>
+                <?php echo $text_no; ?>
+                </td>
+            </tr>
+			<tr>
+              <td><?php echo $entry_jqzoom_imageopacity; ?></td>
+              <td><input type="text" name="config_jqzoom_imageopacity" value="<?php echo $config_jqzoom_imageopacity; ?>" size="3" disabled/>
+              </td>
+            </tr>
+			<tr>
+              <td><?php echo $entry_jqzoom_fadein; ?></td>
+              <td>
+                <input type="radio" name="config_jqzoom_fadein" value="1" disabled/>
+                <?php echo $text_yes; ?>
+                <input type="radio" name="config_jqzoom_fadein" value="0" checked="checked" disabled/>
+                <?php echo $text_no; ?>
+                </td>
+            </tr>
+			<tr>
+              <td><?php echo $entry_jqzoom_fadeout; ?></td>
+              <td>
+                <input type="radio" name="config_jqzoom_fadeout" value="1" disabled/>
+                <?php echo $text_yes; ?>
+                <input type="radio" name="config_jqzoom_fadeout" value="0" checked="checked" disabled/>
+                <?php echo $text_no; ?>
+                </td>
+            </tr>
+			<tr>
+              <td><?php echo $entry_jqzoom_fadein_speed; ?></td>
+              <td><input type="text" name="config_jqzoom_fadein_speed" value="<?php echo $config_jqzoom_fadein_speed; ?>" size="3" disabled/>
+              </td>
+            </tr>
+			<tr>
+              <td><?php echo $entry_jqzoom_fadeout_speed; ?></td>
+              <td><input type="text" name="config_jqzoom_fadeout_speed" value="<?php echo $config_jqzoom_fadeout_speed; ?>" size="3" disabled/>
+              </td>
+            </tr>
+			<tr>
+              <td><?php echo $entry_jqzoom_cursor; ?></td>
+              <td><input type="text" name="config_jqzoom_cursor" value="<?php echo $config_jqzoom_cursor; ?>" size="3" />
+              </td>
+            </tr>	
+			</table>
+            ]]></add>
+        </operation>
+	</file>
+	<file name="admin/language/english/setting/setting.php">
+        <operation>
+            <search position="before"><![CDATA[$_['entry_image_category']]]></search>
+            <add><![CDATA[
+			$_['entry_jqzoom']         = 'Enable product image zoom';
+			$_['entry_jqzoom_type']         = 'Zoom type';
+			$_['entry_image_jqzoom']         = 'Image Size:<br /><span class="help">The size of the zoomed image: width , height.</span>';
+			$_['entry_image_jqzoom_window']         = 'Window Size:<br /><span class="help">The popup window size: width , height.</span>';
+			$_['entry_jqzoom_offset']         = 'Window Offset:<br /><span class="help">Horizontal offset, Vertical offset.</span>';
+			$_['entry_jqzoom_position']         = 'Window Position';
+			$_['entry_jqzoom_always']         = 'Always show zoom window';
+			$_['entry_jqzoom_preload']         = 'Large Image Preload';
+			$_['entry_jqzoom_preloadtext']         = 'Preload Text:<br /><span class="help">The text to show while preloading images.</span>';
+			$_['entry_jqzoom_title']         = 'Window Title:<br /><span class="help">Show a small title over the zoomed window</span>';
+			$_['entry_jqzoom_lens']         = 'Show lens:<br /><span class="help">Show lens when hovering</span>';
+			$_['entry_jqzoom_imageopacity']         = 'Image Opacity:<br /><span class="help">Set the image opacity when the zoomType option is set to reverse. Value 0 - 1.</span>';
+			$_['entry_jqzoom_fadein']         = 'Fade In';
+			$_['entry_jqzoom_fadeout']         = 'Fade Out';
+			$_['entry_jqzoom_fadein_speed']         = 'Fade In Speed:<br /><span class="help">Changes fade speed(options: fast, slow, number)</span>';
+			$_['entry_jqzoom_fadeout_speed']         = 'Fade Out Speed:<br /><span class="help">Changes fade speed(options: fast, slow, number)</span>';
+			$_['entry_jqzoom_cursor']         = 'Cursor<br /><span class="help">E.g. crosshair, none, move.</span>';
+			
+			$_['text_jqzoom_product_zoom']         = 'jgsw Product Zoom Deluxe demo';
+			$_['text_jqzoom_standard']         = 'Standard';
+			$_['text_jqzoom_reverse']         = 'Reverse';
+			$_['text_jqzoom_drag']         = 'Drag';
+			$_['text_jqzoom_innerzoom']         = 'Innerzoom';
+			$_['text_jqzoom_right']         = 'Right';
+			$_['text_jqzoom_left']         = 'Left';
+			$_['text_jqzoom_top']         = 'Top';
+			$_['text_jqzoom_bottom']         = 'Bottom';
+			
+			$_['error_image_jqzoom']         = 'jqZoom Size dimensions required!';
+			$_['error_image_jqzoom_window']         = 'jqZoom Window Size dimensions required!';
+			
+			
+			]]></add>
+        </operation>
+	</file>
+	<file name="admin/controller/setting/setting.php">
+        <operation>
+            <search position="before"><![CDATA[$this->data['entry_image_category'] = $this->language->get('entry_image_category');]]></search>
+            <add><![CDATA[
+		$this->data['entry_jqzoom'] = $this->language->get('entry_jqzoom');
+		$this->data['entry_jqzoom_type'] = $this->language->get('entry_jqzoom_type');
+		$this->data['entry_image_jqzoom'] = $this->language->get('entry_image_jqzoom');
+		$this->data['entry_image_jqzoom_window'] = $this->language->get('entry_image_jqzoom_window');
+		$this->data['entry_jqzoom_offset'] = $this->language->get('entry_jqzoom_offset');
+		$this->data['entry_jqzoom_position'] = $this->language->get('entry_jqzoom_position');
+		$this->data['entry_jqzoom_always'] = $this->language->get('entry_jqzoom_always');
+		$this->data['entry_jqzoom_preload'] = $this->language->get('entry_jqzoom_preload');
+		$this->data['entry_jqzoom_preloadtext'] = $this->language->get('entry_jqzoom_preloadtext');
+		$this->data['entry_jqzoom_title'] = $this->language->get('entry_jqzoom_title');
+		$this->data['entry_jqzoom_lens'] = $this->language->get('entry_jqzoom_lens');
+		$this->data['entry_jqzoom_imageopacity'] = $this->language->get('entry_jqzoom_imageopacity');
+		$this->data['entry_jqzoom_fadein'] = $this->language->get('entry_jqzoom_fadein');
+		$this->data['entry_jqzoom_fadeout'] = $this->language->get('entry_jqzoom_fadeout');
+		$this->data['entry_jqzoom_fadein_speed'] = $this->language->get('entry_jqzoom_fadein_speed');
+		$this->data['entry_jqzoom_fadeout_speed'] = $this->language->get('entry_jqzoom_fadeout_speed');
+		$this->data['entry_jqzoom_cursor'] = $this->language->get('entry_jqzoom_cursor');
+		
+		$this->data['text_jqzoom_product_zoom'] = $this->language->get('text_jqzoom_product_zoom');
+		$this->data['text_jqzoom_standard'] = $this->language->get('text_jqzoom_standard');
+		$this->data['text_jqzoom_reverse'] = $this->language->get('text_jqzoom_reverse');
+		$this->data['text_jqzoom_drag'] = $this->language->get('text_jqzoom_drag');
+		$this->data['text_jqzoom_innerzoom'] = $this->language->get('text_jqzoom_innerzoom');
+		$this->data['text_jqzoom_right'] = $this->language->get('text_jqzoom_right');
+		$this->data['text_jqzoom_left'] = $this->language->get('text_jqzoom_left');
+		$this->data['text_jqzoom_top'] = $this->language->get('text_jqzoom_top');
+		$this->data['text_jqzoom_bottom'] = $this->language->get('text_jqzoom_bottom');
+		]]></add>
+        </operation>
+		<operation>
+            <search position="before"><![CDATA[if (isset($this->request->post['config_image_category_width'])) {]]></search>
+            <add><![CDATA[
+		if (isset($this->request->post['config_image_jqzoom_width'])) {
+			$this->data['config_image_jqzoom_width'] = $this->request->post['config_image_jqzoom_width'];
+		} else {
+			$this->data['config_image_jqzoom_width'] = $this->config->get('config_image_jqzoom_width');
+		}
+
+		if (isset($this->request->post['config_image_jqzoom_height'])) {
+			$this->data['config_image_jqzoom_height'] = $this->request->post['config_image_jqzoom_height'];
+		} else {
+			$this->data['config_image_jqzoom_height'] = $this->config->get('config_image_jqzoom_height');
+		}
+		
+		if (isset($this->request->post['config_image_jqzoom_window_width'])) {
+			$this->data['config_image_jqzoom_window_width'] = $this->request->post['config_image_jqzoom_window_width'];
+		} else {
+			$this->data['config_image_jqzoom_window_width'] = $this->config->get('config_image_jqzoom_window_width');
+		}
+
+		if (isset($this->request->post['config_image_jqzoom_window_height'])) {
+			$this->data['config_image_jqzoom_window_height'] = $this->request->post['config_image_jqzoom_window_height'];
+		} else {
+			$this->data['config_image_jqzoom_window_height'] = $this->config->get('config_image_jqzoom_window_height');
+		}
+		
+		if (isset($this->request->post['config_jqzoom_offset_horizontal'])) {
+			$this->data['config_jqzoom_offset_horizontal'] = $this->request->post['config_jqzoom_offset_horizontal'];
+		} else {
+			$this->data['config_jqzoom_offset_horizontal'] = $this->config->get('config_jqzoom_offset_horizontal');
+		}
+
+		if (isset($this->request->post['config_jqzoom_offset_vertical'])) {
+			$this->data['config_jqzoom_offset_vertical'] = $this->request->post['config_jqzoom_offset_vertical'];
+		} else {
+			$this->data['config_jqzoom_offset_vertical'] = $this->config->get('config_jqzoom_offset_vertical');
+		}
+		
+		
+		if (isset($this->request->post['config_jqzoom'])) {
+			$this->data['config_jqzoom'] = $this->request->post['config_jqzoom'];
+		} else {
+			$this->data['config_jqzoom'] = $this->config->get('config_jqzoom');
+		}
+		
+		if (isset($this->request->post['config_jqzoom_type'])) {
+			$this->data['config_jqzoom_type'] = $this->request->post['config_jqzoom_type'];
+		} else {
+			$this->data['config_jqzoom_type'] = $this->config->get('config_jqzoom_type');
+		}
+		
+		if (isset($this->request->post['config_jqzoom_position'])) {
+			$this->data['config_jqzoom_position'] = $this->request->post['config_jqzoom_position'];
+		} else {
+			$this->data['config_jqzoom_position'] = $this->config->get('config_jqzoom_position');
+		}
+		
+		if (isset($this->request->post['config_jqzoom_always'])) {
+			$this->data['config_jqzoom_always'] = $this->request->post['config_jqzoom_always'];
+		} else {
+			$this->data['config_jqzoom_always'] = $this->config->get('config_jqzoom_always');
+		}
+		
+		if (isset($this->request->post['config_jqzoom_preload'])) {
+			$this->data['config_jqzoom_preload'] = $this->request->post['config_jqzoom_preload'];
+		} else {
+			$this->data['config_jqzoom_preload'] = $this->config->get('config_jqzoom_preload');
+		}
+		
+		if (isset($this->request->post['config_jqzoom_preloadtext'])) {
+			$this->data['config_jqzoom_preloadtext'] = $this->request->post['config_jqzoom_preloadtext'];
+		} else {
+			$this->data['config_jqzoom_preloadtext'] = $this->config->get('config_jqzoom_preloadtext');
+		}
+		
+		if (isset($this->request->post['config_jqzoom_title'])) {
+			$this->data['config_jqzoom_title'] = $this->request->post['config_jqzoom_title'];
+		} else {
+			$this->data['config_jqzoom_title'] = $this->config->get('config_jqzoom_title');
+		}
+		
+		if (isset($this->request->post['config_jqzoom_lens'])) {
+			$this->data['config_jqzoom_lens'] = $this->request->post['config_jqzoom_lens'];
+		} else {
+			$this->data['config_jqzoom_lens'] = $this->config->get('config_jqzoom_lens');
+		}
+		
+		if (isset($this->request->post['config_jqzoom_imageopacity'])) {
+			$this->data['config_jqzoom_imageopacity'] = $this->request->post['config_jqzoom_imageopacity'];
+		} else {
+			$this->data['config_jqzoom_imageopacity'] = $this->config->get('config_jqzoom_imageopacity');
+		}
+		
+		if (isset($this->request->post['config_jqzoom_fadein'])) {
+			$this->data['config_jqzoom_fadein'] = $this->request->post['config_jqzoom_fadein'];
+		} else {
+			$this->data['config_jqzoom_fadein'] = $this->config->get('config_jqzoom_fadein');
+		}
+		
+		if (isset($this->request->post['config_jqzoom_fadeout'])) {
+			$this->data['config_jqzoom_fadeout'] = $this->request->post['config_jqzoom_fadeout'];
+		} else {
+			$this->data['config_jqzoom_fadeout'] = $this->config->get('config_jqzoom_fadeout');
+		}
+		
+		if (isset($this->request->post['config_jqzoom_fadein_speed'])) {
+			$this->data['config_jqzoom_fadein_speed'] = $this->request->post['config_jqzoom_fadein_speed'];
+		} else {
+			$this->data['config_jqzoom_fadein_speed'] = $this->config->get('config_jqzoom_fadein_speed');
+		}
+		
+		if (isset($this->request->post['config_jqzoom_fadeout_speed'])) {
+			$this->data['config_jqzoom_fadeout_speed'] = $this->request->post['config_jqzoom_fadeout_speed'];
+		} else {
+			$this->data['config_jqzoom_fadeout_speed'] = $this->config->get('config_jqzoom_fadeout_speed');
+		}
+		
+		if (isset($this->request->post['config_jqzoom_cursor'])) {
+			$this->data['config_jqzoom_cursor'] = $this->request->post['config_jqzoom_cursor'];
+		} else {
+			$this->data['config_jqzoom_cursor'] = $this->config->get('config_jqzoom_cursor');
+		}
+			]]></add>
+        </operation>
+		<operation>
+            <search position="before"><![CDATA[if (!$this->request->post['config_image_category_width'] || !$this->request->post['config_image_category_height'])]]></search>
+            <add><![CDATA[
+		if (!$this->request->post['config_image_jqzoom_width'] || !$this->request->post['config_image_jqzoom_height']) {
+			$this->error['image_jqzoom'] = $this->language->get('error_image_jqzoom');
+		} 
+		
+		if (!$this->request->post['config_image_jqzoom_window_width'] || !$this->request->post['config_image_jqzoom_window_height']) {
+			$this->error['image_jqzoom_window'] = $this->language->get('error_image_jqzoom_window');
+		}
+			]]></add>
+        </operation>
+		<operation>
+            <search position="before"><![CDATA[if (isset($this->error['image_category'])) {]]></search>
+            <add><![CDATA[
+		if (isset($this->error['image_jqzoom'])) {
+			$this->data['error_image_jqzoom'] = $this->error['image_jqzoom'];
+		} else {
+			$this->data['error_image_jqzoom'] = '';
+		}
+		
+		if (isset($this->error['image_jqzoom_window'])) {
+			$this->data['error_image_jqzoom_window'] = $this->error['image_jqzoom_window'];
+		} else {
+			$this->data['error_image_jqzoom_window'] = '';
+		}
+			]]></add>
+        </operation>
+	</file>
+	
+</modification>

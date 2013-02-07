@@ -1,0 +1,63 @@
+﻿<modification>
+
+	<id>Remove Category Product Count</id>
+	<version>1.0</version>
+	<vqmver>2.0</vqmver>
+	<author>webvet</author>
+
+// To Remove the Category Count from Category Module
+<file name="catalog/controller/module/category.php">
+	
+	<operation>
+		<search position="replace"><![CDATA[
+		'name'        => $child['name'] . ' (' . $product_total . ')',
+		]]></search>
+	
+		<add><![CDATA[
+		'name'        => $child['name'],		
+		]]></add>
+	</operation>
+
+	<operation>
+		<search position="replace"><![CDATA[
+		'name'        => $category['name'] . ' (' . $product_total . ')',
+		]]></search>
+
+		<add><![CDATA[
+		'name'        => $category['name'],
+		]]></add>
+	</operation>
+
+</file>
+
+// To Remove the Sub-Category Count from the Category Page
+<file name="catalog/controller/product/category.php">
+
+	<operation>
+		<search position="replace"><![CDATA[
+		'name'  => $result['name'] . ' (' . $product_total . ')',
+		]]></search>
+
+		<add><![CDATA[
+		'name'  => $result['name'],
+		]]></add>
+	</operation>
+
+</file>
+
+// To Remove the Category Count from the Top Menu
+<file name="catalog/controller/common/header.php">
+
+	<operation>
+		<search postition="replace"><![CDATA[
+		'name'  => $child['name'] . ' (' . $product_total . ')',
+		]]></search>
+
+		<add><![CDATA[
+		'name'  => $child['name'],
+		]]></add>
+	</operation>
+
+</file>
+
+</modification>

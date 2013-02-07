@@ -1,0 +1,88 @@
+<modification>
+	<id><![CDATA[AutoRelated Products]]></id>
+	<version><![CDATA[1.0]]></version>
+	<vqmver><![CDATA[2.1.5]]></vqmver>
+	<author><![CDATA[sopedro]]></author>
+	
+	<file name="catalog/controller/product/product.php">
+		<operation>
+			<search position="after"><![CDATA[$results = $this->model_catalog_product->getProductRelated($this->request->get['product_id']);]]></search>
+			<add><![CDATA[
+			       				
+				//related by category
+				if(count($results)<3){//change to suit number of products to display
+				$temp = $this->model_catalog_product->getProductRelatedByCategory($this->request->get['product_id'],count($results));
+				foreach($temp as $t){               
+				 if(!empty($t)){                 
+				    $results[] = $t;                
+					}        
+			    }        
+			}    
+			
+			//related by manufacturer
+				   if(count($results)<3 && (int)$this->data['product_info']['manufacturer_id'] > 0){//change to suit number of products to display 
+				   $temp = $this->model_catalog_product->getProductRelatedByManufacturer($this->data['product_info']['manufacturer_id'],$this->request->get['product_id'],count($results));                   foreach($temp as $t){
+				     if(!empty($t)){                    
+					    $results[] = $t;               
+						 }          
+				    }        
+				}           
+			   
+			   //related by randomisation
+			   if(count($results)<3){//change to suit number of products to display
+			    $temp = $this->model_catalog_product->getProductRelatedByNothing($this->request->get['product_id'],count($results));
+	            foreach($temp as $t){              
+				  if(!empty($t)){                
+				      $results[] = $t;                
+					  }            
+			}       
+		}     
+		]]></add>
+		</operation>
+	</file>
+	
+		<file name="catalog/model/catalog/product.php">
+		<operation>
+			<search position="after" offset="4"><![CDATA[$product_data[$result['related_id']] = $this->getProduct($result['related_id']);]]></search>
+			<add><![CDATA[
+									
+					 public function getProductRelatedByCategory($product_id,$num_results) {
+					//return array();
+					$product_data = array();
+					 $num = 3 - $num_results;//change to suit number of products to display 
+					 $getCat = $this->db->query("SELECT * FROM " . DB_PREFIX . "product_to_category WHERE product_id = '" . (int)$product_id . "'");     $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product_to_category WHERE category_id = '" . (int)$getCat->row['category_id'] . "' AND product_id != '" . (int)$product_id . "' ORDER BY RAND() LIMIT 0,".$num."");                       
+					 foreach ($query->rows as $result) {
+					     $product_data[$result['product_id']] = $this->getProduct($result['product_id']);
+				   }   
+				    return $product_data;
+				} 
+				
+				public function getProductRelatedByManufacturer($manufacturer_id,$product_id,$num_results) {
+				//return array();
+				 $product_data = array();
+				  $num = 3 - $num_results;//change to suit number of products to display
+				   $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product WHERE manufacturer_id = '" . (int)$manufacturer_id . "' AND product_id != '" . (int)$product_id . "' LIMIT 0,".$num."");
+				   foreach ($query->rows as $result) {
+				      $product_data[$result['product_id']] = $this->getProduct($result['product_id']);  
+				}     
+				    return $product_data;
+					
+					}
+				    
+					public function getProductRelatedByNothing($product_id,$num_results) {
+					 $product_data = array();
+					 $num = 3 - $num_results;//change to suit number of products to display 
+					   $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "product WHERE product_id != '" . (int)$product_id . "' ORDER BY RAND() LIMIT 0,".$num."");
+					   
+					   foreach ($query->rows as $result) {
+					       $product_data[$result['product_id']] = $this->getProduct($result['product_id']);
+				    }    
+					 return $product_data;
+			} ]]></add>
+		</operation>
+	</file>
+	
+	
+
+	
+</modification>

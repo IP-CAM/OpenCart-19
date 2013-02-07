@@ -1,0 +1,10 @@
+@charset "utf-8";
+/* CSS Document */
+/* Author : Trinkal Juneja version 1.0  
+	info@codertj.com */
+/* Top Arror Css */
+#topon a:hover span  { background-position:bottom;display: block;margin-bottom: 7px;width:35px;}
+#topon a:hover span { background-position: 0% -34px;}
+#topon span { background: url("http://livedemo00.template-help.com/opencart_39721/catalog/view/theme/theme040/image/up-arrow.png") 0% 0px no-repeat transparent;display: block;height: 20px;margin-bottom: 7px;width: 35px;}
+#topon { bottom: 30px;left: 45%;margin-left: 600px;position: fixed;z-index: 9999;}
+#topon p { margin-bottom: 20px;margin-top: 0px;}

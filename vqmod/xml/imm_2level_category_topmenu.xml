@@ -1,0 +1,140 @@
+<modification>
+	<id>2 Level Category Topmenu</id>
+	<version>2.1</version>
+	<vqmver>1.2.3</vqmver>
+	<author>Imm</author>
+	<file name="catalog/controller/common/header.php">
+		<operation error="log">
+			<search position="before"><![CDATA[$children_data[] = array(]]></search>
+			<add><![CDATA[$children_data1 = array();
+					$children1 = $this->model_catalog_category->getCategories($child['category_id']);
+					foreach ($children1 as $child1) {
+						$data1 = array(
+							'filter_category_id'  => $child1['category_id'],
+							'filter_sub_category' => true
+						);
+						$product_total1 = $this->model_catalog_product->getTotalProducts($data1);
+
+						$children_data1[] = array(
+							'name'  => $child1['name'] . ($this->config->get('config_product_count') ? ' (' . $product_total1 . ')' : ''),
+							'href'  => $this->url->link('product/category', 'path=' . $category['category_id'] . '_' . $child['category_id'] . '_' . $child1['category_id'])	
+						);						
+					}]]></add>
+		</operation>
+	</file>
+	<file name="catalog/controller/common/header.php">
+		<operation error="log">
+			<search  position="after"><![CDATA[$children_data[] = array(]]></search>
+			<add><![CDATA['children' => $children_data1, //]]></add>
+		</operation>
+	</file>
+	<file name="catalog/view/theme/*/template/common/header.tpl">
+		<operation error="log">
+			<search position="before"><![CDATA[</head>]]></search>
+			<add><![CDATA[
+<style type="text/css">
+#menu div a > span{
+	padding-right: 20px;
+	margin-right: 0px;
+	display:block;
+}
+#menu ul > li > div{
+	padding:0px;
+}
+#menu ul > li > div a{
+	padding:0px;
+	margin:0px;
+}
+
+#menu .parent:hover > div {
+	display: table;
+}
+#menu .parent > div > ul{
+	display: table-cell;
+}
+#menu .parent > a > span{
+	background-image: url('catalog/view/theme/default/image/next.png');
+	background-repeat: no-repeat;
+	background-attachment: float;
+	background-position: center right;	
+}
+.dchild, .cdchild{
+	display: none;
+	/*background: #FFFFFF;*/
+	/*background: #F8F8F8; Theia background*/
+	position: absolute;
+	z-index: 5;
+	padding: 5px;
+	visibility:inherit;
+	border: 1px solid #000000; /*4px solid #FFFFFF; Theia*/ /*Submenu border*/
+	-webkit-border-radius: 0px 5px 5px 0px; /*3px 3px 3px 3px; Theia*/
+	-moz-border-radius: 0px 5px 5px 0px ; /*3px 3px 3px 3px; Theia*/
+	-khtml-border-radius: 0px 5px 5px 0px; /*3px 3px 3px 3px; Theia*/
+	border-radius: 0px 5px 5px 0px; /*3px 3px 3px 3px; Theia*/
+	background: url('catalog/view/theme/default/image/menu.png'); /*Submenu background (black-transparent)*/
+}
+.dchild{margin: -1.8em 0 0 100%;}
+.cdchild{margin: -0.3em 0 0 1em;}
+#menu div > ul > li{
+	margin-right:-20px;
+	padding-right:20px;
+}
+#menu .dchild ul > li > a{
+	color: #FFFFFF;
+}
+</style>]]></add>
+		</operation>
+		<operation error="skip">
+			<search  position="replace"><![CDATA[<li><a<?php echo ($i==(count($category['children'])-1) ? " class='last_submenu_item'" : '');?> href="<?php echo $category['children'][$i]['href']; ?>"><?php echo $category['children'][$i]['name']; ?></a></li>]]></search>
+			<add><![CDATA[<?php if ($category['children'][$i]['children']) { ?>
+			<li class="parent"><a<?php echo ($i==(count($category['children'])-1) ? " class='last_submenu_item'" : '');?> href="<?php echo $category['children'][$i]['href']; ?>"><span><?php echo $category['children'][$i]['name']; ?></span></a>
+			<div class="dchild">
+				<ul>
+					<?php foreach ($category['children'][$i]['children'] as $category_3) { ?>
+						<li><a href="<?php echo $category_3['href']; ?>"><span><?php echo $category_3['name']; ?></span></a></li>
+					<?php } ?>
+				</ul>
+			</div>
+			<?php } 
+			else{ ?>
+			<li><a<?php echo ($i==(count($category['children'])-1) ? " class='last_submenu_item'" : '');?> href="<?php echo $category['children'][$i]['href']; ?>"><span><?php echo $category['children'][$i]['name']; ?></span></a>
+			<?php } ?>
+			</li>]]></add>
+		</operation>
+		<operation error="skip">
+			<search  position="replace"><![CDATA[<li><a href="<?php echo $category['children'][$i]['href']; ?>"><?php echo $category['children'][$i]['name']; ?></a></li>]]></search>
+			<add><![CDATA[<?php if ($category['children'][$i]['children']) { ?>
+			<li class="parent"><a href="<?php echo $category['children'][$i]['href']; ?>"><span><?php echo $category['children'][$i]['name']; ?></span></a>
+			<div class="dchild">
+				<ul>
+					<?php foreach ($category['children'][$i]['children'] as $category_3) { ?>
+						<li><a href="<?php echo $category_3['href']; ?>"><span><?php echo $category_3['name']; ?></span></a></li>
+					<?php } ?>
+				</ul>
+			</div>
+			<?php } 
+			else{ ?>
+			<li><a href="<?php echo $category['children'][$i]['href']; ?>"><span><?php echo $category['children'][$i]['name']; ?></span></a>
+			<?php } ?>
+			</li>]]></add>
+		</operation>
+		<operation error="skip">
+			<search  position="replace"><![CDATA[$org_html .= "<li><a href='".$category['children'][$i]['href']."'>".$category['children'][$i]['name']."</a></li>";]]></search>
+			<add><![CDATA[
+			if ($category['children'][$i]['children']) {
+			$org_html .= "<li class='parent'><a href='".$category['children'][$i]['href']."'><span>".$category['children'][$i]['name']."</span></a>";
+			$org_html .= "<div class='dchild'><ul>";
+			foreach ($category['children'][$i]['children'] as $category_3) {
+				$org_html .= "<li><a href='".$category_3['href']."'><span>".$category_3['name']."</span></a></li>";
+			}
+			$org_html .= "</ul></div>";
+		} 
+		else{
+			$org_html .= "<li><a href='".$category['children'][$i]['href']."'><span>".$category['children'][$i]['name']."</span></a>";
+		}
+
+$org_html .= "</li>";
+			]]></add>
+		</operation>
+	</file>
+</modification>    

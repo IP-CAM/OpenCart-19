@@ -1,0 +1,36 @@
+<modification>
+    <id>Header Notifications</id>
+    <version>1.0.0</version>
+    <vqmver>1.0.0</vqmver>
+    <author>richylh@gmail.com</author>
+
+    <file name="catalog/view/theme/default/template/common/header.tpl">
+        <operation>
+            <search position="replace" index="1">
+                <![CDATA[<body>]]>
+            </search>
+            <add>
+                <![CDATA[
+                <div id="HeaderNotification" style=" background-color:#FF9900; z-index:100;font-size:20px; text-align:center; color:#fff; position:fixed;width:100%;height:28px;top:0px;">This site is in DEVELOPMENT. No orders will be processed!</div>
+                <body>
+                ]]>
+            </add>
+        </operation>
+        
+    </file>
+
+    <file name="admin/view/template/common/header.tpl">
+        <operation>
+            <search position="replace" index="1">
+                <![CDATA[<body>]]>
+            </search>
+            <add>
+                <![CDATA[
+                <div id="HeaderNotification" style=" background-color:#FF9900; z-index:100;font-size:20px; text-align:center; color:#fff; position:fixed;width:100%;height:28px;top:0px;">You are on DEMO site. No orders will be processed!</div>
+                <body>
+                ]]>
+            </add>
+        </operation>
+        
+    </file>
+</modification>

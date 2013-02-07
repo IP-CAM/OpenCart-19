@@ -1,0 +1,18 @@
+<modification>
+
+    <id>Remove category child amount</id>
+    <version>1.0</version>
+    <author>thelostart</author>
+	
+    <file name="catalog/controller/module/category.php">
+		<operation>
+			<search position="replace"><![CDATA[
+			'name'        => $child['name'] . ' (' . $product_total . ')',
+			]]></search>
+			<add><![CDATA[
+			'name'        => $child['name'],
+			]]></add>
+        </operation>
+	</file>
+
+</modification>

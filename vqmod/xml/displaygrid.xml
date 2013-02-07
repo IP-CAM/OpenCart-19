@@ -1,0 +1,17 @@
+<modification>
+	<id>Display grid io list as default</id>
+	<version>1.0</version>
+	<vqmver>2.1.6</vqmver>
+	<author>Webfryslan</author>
+
+	
+<file name="catalog/view/theme/default/template/product/category.tpl">
+	<operation>
+		<search position="replace"><![CDATA[display('list');]]></search>
+		<add><![CDATA[display('grid');		  
+			]]></add>
+	</operation>
+	
+</file>
+
+</modification>
